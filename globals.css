@@ -1,0 +1,319 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Sakae Detail Shop · tokens da direção de arte "Luz de inspeção"
+   ============================================================ */
+@theme {
+  --color-verniz: #0a0b0d; /* background */
+  --color-noite: #16191e; /* luz difusa na pintura */
+  --color-grafite: #141519; /* surface */
+  --color-linha: #25272d; /* hairlines */
+  --color-cera: #efece6; /* text */
+  --color-fosco: #8d9096; /* muted */
+  --color-laranja: #f0690f; /* primary: só ação e logo */
+  --color-laranja-q: #ff7a22; /* primary hover */
+  --color-luz: #e3eaf1; /* accent: linha de luz */
+  --color-brilho: #ffffff; /* pico do reflexo */
+  --color-primer: #d9dce0; /* secondary: seção clara */
+  --color-primer-tx: #4a4d53; /* muted sobre primer */
+
+  --ease-polish: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@theme inline {
+  --font-display: var(--font-archivo), "Arial Black", system-ui, sans-serif;
+  --font-sans: var(--font-instrument), system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-plex), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-kanji: var(--font-kanji-face), "Noto Serif JP", "Yu Mincho", serif;
+}
+
+/* ---------------- base ---------------- */
+@layer base {
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+    scroll-padding-top: 84px;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-verniz);
+    color: var(--color-cera);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--color-laranja);
+    color: var(--color-verniz);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-luz);
+    outline-offset: 3px;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+}
+
+/* ---------------- componentes ---------------- */
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-left: max(clamp(16px, 4vw, 56px), env(safe-area-inset-left));
+    padding-right: max(clamp(16px, 4vw, 56px), env(safe-area-inset-right));
+  }
+
+  /* Etiqueta técnica: a voz de catálogo */
+  .lbl {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 1.5;
+  }
+
+  /* Display expandido: o "motor" */
+  .display {
+    font-family: var(--font-display);
+    font-stretch: 125%;
+    font-weight: 760;
+    letter-spacing: -0.028em;
+    line-height: 1;
+  }
+
+  /* Botão de ação: canto cortado como etiqueta de peça */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7em;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 16px 22px;
+    background: var(--color-laranja);
+    color: var(--color-verniz);
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+    transition: background-color 160ms ease;
+    white-space: nowrap;
+  }
+  .btn:hover {
+    background: var(--color-laranja-q);
+  }
+  .btn:focus-visible {
+    outline: 2px solid var(--color-verniz);
+    outline-offset: -6px;
+  }
+  .btn-dark {
+    background: var(--color-verniz);
+    color: var(--color-cera);
+  }
+  .btn-dark:hover {
+    background: var(--color-grafite);
+  }
+  .btn-dark:focus-visible {
+    outline-color: var(--color-cera);
+  }
+  .btn .arw {
+    display: inline-block;
+    transition: transform 160ms ease;
+  }
+  .btn:hover .arw,
+  .link-under:hover .arw {
+    transform: translate(3px, -3px);
+  }
+
+  /* Link secundário: sublinhado laranja que corre */
+  .link-under {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding-block: 10px;
+    background-image: linear-gradient(var(--color-laranja), var(--color-laranja));
+    background-repeat: no-repeat;
+    background-position: 0 calc(100% - 4px);
+    background-size: 0 1px;
+    transition: background-size 300ms var(--ease-polish);
+  }
+  .link-under:hover {
+    background-size: 100% 1px;
+  }
+  .link-under .arw {
+    transition: transform 160ms ease;
+  }
+
+  /* Linha de luz: o reflexo de uma luz de inspeção */
+  .lightline {
+    position: relative;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--color-luz) 12%, transparent) 12%,
+      color-mix(in srgb, var(--color-luz) 70%, transparent) 50%,
+      color-mix(in srgb, var(--color-luz) 12%, transparent) 88%,
+      transparent
+    );
+  }
+  .lightline::after {
+    content: "";
+    position: absolute;
+    inset: -6px 20%;
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--color-luz) 14%, transparent),
+      transparent
+    );
+    filter: blur(4px);
+  }
+
+  /* Superfície de pintura preta do hero */
+  .paint {
+    background:
+      radial-gradient(70% 55% at 72% 112%, var(--color-noite) 0%, transparent 62%),
+      radial-gradient(55% 45% at 8% -12%, var(--color-grafite) 0%, transparent 70%),
+      var(--color-verniz);
+  }
+  .paint-line {
+    position: absolute;
+    left: -10%;
+    right: -10%;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--color-luz) 22%, transparent) 14%,
+      var(--color-brilho) 60%,
+      color-mix(in srgb, var(--color-luz) 25%, transparent) 88%,
+      transparent
+    );
+    box-shadow: 0 0 34px 4px color-mix(in srgb, var(--color-luz) 20%, transparent);
+  }
+  .paint-line::after {
+    content: "";
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    top: 18px;
+    height: 70px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--color-luz) 6%, transparent) 55%,
+      transparent
+    );
+    filter: blur(14px);
+  }
+  .glint {
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--color-laranja) 22%, transparent),
+      transparent
+    );
+    filter: blur(16px);
+  }
+  .grain {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    opacity: 0.045;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+
+  /* Marquee de marcas */
+  .marquee {
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 45s linear infinite;
+  }
+  .marquee:hover .marquee-track,
+  .marquee:focus-within .marquee-track {
+    animation-play-state: paused;
+  }
+
+  .kanji {
+    font-family: var(--font-kanji);
+    font-weight: 800;
+    line-height: 1;
+    writing-mode: vertical-rl;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Passada de luz: um brilho atravessa o título uma vez */
+@supports ((background-clip: text) or (-webkit-background-clip: text)) {
+  .sweep {
+    background-image: linear-gradient(
+      100deg,
+      currentColor 0 40%,
+      var(--color-fosco) 45%,
+      var(--color-brilho) 50%,
+      var(--color-fosco) 55%,
+      currentColor 60% 100%
+    );
+    background-size: 260% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .sweep.is-on {
+    animation: sweep 1.2s var(--ease-polish) 0.15s both;
+  }
+}
+
+@keyframes sweep {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .marquee-track,
+  .sweep.is-on {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0s !important;
+  }
+}
